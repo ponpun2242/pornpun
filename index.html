@@ -3,137 +3,170 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AR Washing Machine</title>
+  <title>AR Cat & Washing Machine</title>
 
-  <!-- A-Frame + AR.js -->
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
   <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 
   <style>
-    body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
+    body { margin:0; overflow:hidden; font-family:Arial,sans-serif; }
     #controls {
-      position: fixed;
-      z-index: 10;
-      left: 50%;
-      bottom: 20px;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,.75);
-      color: white;
-      padding: 12px 16px;
-      border-radius: 14px;
-      text-align: center;
-      width: min(90vw, 360px);
+      position:fixed; z-index:20; left:50%; bottom:18px;
+      transform:translateX(-50%);
+      background:rgba(0,0,0,.78); color:#fff;
+      padding:12px 15px; border-radius:14px;
+      width:min(92vw,380px); text-align:center;
     }
     button {
-      font-size: 18px;
-      padding: 10px 16px;
-      margin: 4px;
-      border: 0;
-      border-radius: 8px;
-      cursor: pointer;
+      font-size:18px; padding:9px 15px; margin:4px;
+      border:0; border-radius:9px; cursor:pointer;
     }
-    #speed { font-weight: bold; }
+    .title { font-weight:bold; margin-bottom:5px; }
+    #speed { font-weight:bold; }
   </style>
 </head>
 
 <body>
-  <div id="controls">
-    <div>ความเร็วเครื่องซักผ้า: <span id="speed">0</span> RPM</div>
-    <button onclick="changeSpeed(-100)">−</button>
-    <button onclick="stopMotor()">STOP</button>
-    <button onclick="changeSpeed(100)">+</button>
-  </div>
+<div id="controls">
+  <div class="title">AR Object Speed Control</div>
+  <div>ความเร็ว: <span id="speed">0</span> RPM</div>
+  <button onclick="changeSpeed(-100)">−</button>
+  <button onclick="stopAll()">STOP</button>
+  <button onclick="changeSpeed(100)">+</button>
+</div>
 
-  <a-scene
-    embedded
-    vr-mode-ui="enabled: false"
-    renderer="logarithmicDepthBuffer: true; antialias: true"
-    arjs="sourceType: webcam; debugUIEnabled: false;">
+<a-scene
+  embedded
+  vr-mode-ui="enabled:false"
+  renderer="logarithmicDepthBuffer:true; antialias:true"
+  arjs="sourceType:webcam; debugUIEnabled:false;">
 
-    <!-- ใช้ Hiro marker เป็นค่าเริ่มต้น -->
-    <a-marker preset="hiro">
+  <!-- Marker แมว: ใช้ Hiro marker -->
+  <a-marker id="catMarker" preset="hiro">
+    <a-entity id="cat" position="0 0 0">
 
-      <!-- เครื่องซักผ้าแบบ 3D สร้างจาก primitive -->
-      <a-entity id="washingMachine" position="0 0 0">
+      <!-- ตัวแมว -->
+      <a-sphere position="0 0.65 0" scale="0.48 0.35 0.35" color="#d99a5b"></a-sphere>
 
-        <!-- ตัวเครื่อง -->
-        <a-box position="0 0.75 0" width="1.4" height="1.5" depth="0.75"
-               color="#d8d8d8"></a-box>
+      <!-- หัว -->
+      <a-sphere position="0 1.05 -0.03" radius="0.32" color="#d99a5b"></a-sphere>
 
-        <!-- แผงควบคุมด้านบน -->
-        <a-box position="0 1.42 -0.39" width="1.25" height="0.25" depth="0.06"
-               color="#303030"></a-box>
+      <!-- หู -->
+      <a-cone position="-0.19 1.31 -0.02" radius-bottom="0.14"
+              radius-top="0" height="0.28" color="#d99a5b"></a-cone>
+      <a-cone position="0.19 1.31 -0.02" radius-bottom="0.14"
+              radius-top="0" height="0.28" color="#d99a5b"></a-cone>
 
-        <!-- ปุ่มควบคุม -->
-        <a-cylinder position="0.35 1.45 -0.45" radius="0.07" height="0.04"
-                     rotation="90 0 0" color="#eeeeee"></a-cylinder>
+      <!-- ตา -->
+      <a-sphere position="-0.11 1.10 -0.29" radius="0.045" color="#111"></a-sphere>
+      <a-sphere position="0.11 1.10 -0.29" radius="0.045" color="#111"></a-sphere>
 
-        <!-- ประตู -->
-        <a-cylinder id="door" position="0 0.72 -0.405"
-                     radius="0.43" height="0.08"
-                     rotation="90 0 0" color="#222222"></a-cylinder>
+      <!-- จมูก -->
+      <a-sphere position="0 1.01 -0.32" radius="0.035" color="#e88"></a-sphere>
 
-        <a-cylinder position="0 0.72 -0.45"
-                    radius="0.34" height="0.09"
-                    rotation="90 0 0" color="#6fa8dc"></a-cylinder>
+      <!-- หาง -->
+      <a-torus id="catTail" position="0.48 0.72 0.05"
+               radius="0.22" radius-tubular="0.045"
+               rotation="0 90 0" color="#d99a5b"></a-torus>
 
-        <!-- ตรงกลางประตู -->
-        <a-cylinder id="drum" position="0 0.72 -0.51"
-                    radius="0.25" height="0.03"
-                    rotation="90 0 0" color="#999999"></a-cylinder>
+      <!-- ขา -->
+      <a-cylinder position="-0.25 0.30 -0.12" radius="0.07" height="0.35" color="#d99a5b"></a-cylinder>
+      <a-cylinder position="0.25 0.30 -0.12" radius="0.07" height="0.35" color="#d99a5b"></a-cylinder>
 
-        <!-- ขาตั้ง -->
-        <a-cylinder position="-0.5 0.05 0.25" radius="0.08" height="0.15" color="#555"></a-cylinder>
-        <a-cylinder position="0.5 0.05 0.25" radius="0.08" height="0.15" color="#555"></a-cylinder>
-        <a-cylinder position="-0.5 0.05 -0.25" radius="0.08" height="0.15" color="#555"></a-cylinder>
-        <a-cylinder position="0.5 0.05 -0.25" radius="0.08" height="0.15" color="#555"></a-cylinder>
+    </a-entity>
+  </a-marker>
 
-        <!-- ชุดผ้าจำลองในถัง -->
-        <a-torus id="innerRing" position="0 0.72 -0.53"
-                 radius="0.25" radius-tubular="0.035"
-                 rotation="90 0 0" color="#ffffff"></a-torus>
+  <!-- Marker เครื่องซักผ้า: ใช้ Kanji marker -->
+  <a-marker id="washerMarker" preset="kanji">
+    <a-entity id="washingMachine" position="0 0 0">
 
-      </a-entity>
+      <!-- ตัวเครื่อง -->
+      <a-box position="0 0.75 0" width="1.4" height="1.5" depth="0.75"
+             color="#d8d8d8"></a-box>
 
-    </a-marker>
+      <!-- แผงควบคุม -->
+      <a-box position="0 1.42 -0.40" width="1.25" height="0.25" depth="0.06"
+             color="#303030"></a-box>
 
-    <a-entity camera></a-entity>
-  </a-scene>
+      <!-- ปุ่ม -->
+      <a-cylinder position="0.35 1.45 -0.45" radius="0.07" height="0.04"
+                   rotation="90 0 0" color="#eeeeee"></a-cylinder>
+
+      <!-- ประตู -->
+      <a-cylinder position="0 0.72 -0.405" radius="0.43" height="0.08"
+                   rotation="90 0 0" color="#222"></a-cylinder>
+      <a-cylinder position="0 0.72 -0.45" radius="0.34" height="0.09"
+                   rotation="90 0 0" color="#6fa8dc"></a-cylinder>
+
+      <!-- ถังซักหมุน -->
+      <a-cylinder id="drum" position="0 0.72 -0.51"
+                   radius="0.25" height="0.03"
+                   rotation="90 0 0" color="#aaa"></a-cylinder>
+
+      <!-- วงแหวน -->
+      <a-torus id="drumRing" position="0 0.72 -0.53"
+               radius="0.25" radius-tubular="0.035"
+               rotation="90 0 0" color="#fff"></a-torus>
+
+      <!-- ขา -->
+      <a-cylinder position="-0.5 0.05 0.25" radius="0.08" height="0.15" color="#555"></a-cylinder>
+      <a-cylinder position="0.5 0.05 0.25" radius="0.08" height="0.15" color="#555"></a-cylinder>
+      <a-cylinder position="-0.5 0.05 -0.25" radius="0.08" height="0.15" color="#555"></a-cylinder>
+      <a-cylinder position="0.5 0.05 -0.25" radius="0.08" height="0.15" color="#555"></a-cylinder>
+
+    </a-entity>
+  </a-marker>
+
+  <a-entity camera></a-entity>
+</a-scene>
 
 <script>
   let speed = 0;
-  const MAX_SPEED = 1200;
   const MIN_SPEED = 0;
+  const MAX_SPEED = 1200;
 
   const speedText = document.getElementById("speed");
   const drum = document.getElementById("drum");
-  const innerRing = document.getElementById("innerRing");
+  const drumRing = document.getElementById("drumRing");
+  const catTail = document.getElementById("catTail");
+
+  function setAnimation(el, duration) {
+    if (!el) return;
+    el.setAttribute("animation", {
+      property: "rotation",
+      to: "90 0 450",
+      loop: true,
+      dur: duration,
+      easing: "linear"
+    });
+  }
 
   function updateSpeed() {
     speed = Math.max(MIN_SPEED, Math.min(MAX_SPEED, speed));
     speedText.textContent = speed;
 
-    // ความเร็วการหมุนของถังจำลอง
-    if (speed > 0) {
-      drum.setAttribute("animation", {
-        property: "rotation",
-        to: "90 0 450",
-        loop: true,
-        dur: Math.max(100, 60000 / speed),
-        easing: "linear"
-      });
-
-      innerRing.setAttribute("animation", {
-        property: "rotation",
-        to: "90 0 450",
-        loop: true,
-        dur: Math.max(100, 60000 / speed),
-        easing: "linear"
-      });
-    } else {
+    if (speed === 0) {
       drum.removeAttribute("animation");
-      innerRing.removeAttribute("animation");
+      drumRing.removeAttribute("animation");
+      catTail.removeAttribute("animation");
+      return;
     }
+
+    // ยิ่ง RPM สูง ยิ่งหมุนเร็ว
+    const duration = Math.max(80, 60000 / speed);
+
+    setAnimation(drum, duration);
+    setAnimation(drumRing, duration);
+
+    // ให้หางแมวขยับตามความเร็วด้วย
+    catTail.setAttribute("animation", {
+      property: "rotation",
+      to: "0 90 35",
+      dir: "alternate",
+      loop: true,
+      dur: Math.max(120, duration * 2),
+      easing: "easeInOutSine"
+    });
   }
 
   function changeSpeed(amount) {
@@ -141,16 +174,15 @@
     updateSpeed();
   }
 
-  function stopMotor() {
+  function stopAll() {
     speed = 0;
     updateSpeed();
   }
 
-  // รองรับคีย์บอร์ด
-  document.addEventListener("keydown", (e) => {
+  document.addEventListener("keydown", function(e) {
     if (e.key === "+" || e.key === "=") changeSpeed(100);
     if (e.key === "-") changeSpeed(-100);
-    if (e.key === " ") stopMotor();
+    if (e.code === "Space") stopAll();
   });
 
   updateSpeed();

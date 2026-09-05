@@ -1,0 +1,11 @@
+AR MARKER GUIDE
+
+1) CAT
+Use AR.js HIRO marker:
+https://raw.githubusercontent.com/AR-js-org/AR.js/master/data/images/HIRO.jpg
+
+2) WASHING MACHINE
+Use AR.js KANJI marker:
+https://raw.githubusercontent.com/AR-js-org/AR.js/master/data/images/kanji.png
+
+Print the marker images at good contrast and keep them flat while testing.
