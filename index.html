@@ -1,191 +1,51 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AR Cat & Washing Machine</title>
-
-  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-
-  <style>
-    body { margin:0; overflow:hidden; font-family:Arial,sans-serif; }
-    #controls {
-      position:fixed; z-index:20; left:50%; bottom:18px;
-      transform:translateX(-50%);
-      background:rgba(0,0,0,.78); color:#fff;
-      padding:12px 15px; border-radius:14px;
-      width:min(92vw,380px); text-align:center;
-    }
-    button {
-      font-size:18px; padding:9px 15px; margin:4px;
-      border:0; border-radius:9px; cursor:pointer;
-    }
-    .title { font-weight:bold; margin-bottom:5px; }
-    #speed { font-weight:bold; }
-  </style>
-</head>
-
-<body>
-<div id="controls">
-  <div class="title">AR Object Speed Control</div>
-  <div>ความเร็ว: <span id="speed">0</span> RPM</div>
-  <button onclick="changeSpeed(-100)">−</button>
-  <button onclick="stopAll()">STOP</button>
-  <button onclick="changeSpeed(100)">+</button>
-</div>
-
-<a-scene
-  embedded
-  vr-mode-ui="enabled:false"
-  renderer="logarithmicDepthBuffer:true; antialias:true"
-  arjs="sourceType:webcam; debugUIEnabled:false;">
-
-  <!-- Marker แมว: ใช้ Hiro marker -->
-  <a-marker id="catMarker" preset="hiro">
-    <a-entity id="cat" position="0 0 0">
-
-      <!-- ตัวแมว -->
-      <a-sphere position="0 0.65 0" scale="0.48 0.35 0.35" color="#d99a5b"></a-sphere>
-
-      <!-- หัว -->
-      <a-sphere position="0 1.05 -0.03" radius="0.32" color="#d99a5b"></a-sphere>
-
-      <!-- หู -->
-      <a-cone position="-0.19 1.31 -0.02" radius-bottom="0.14"
-              radius-top="0" height="0.28" color="#d99a5b"></a-cone>
-      <a-cone position="0.19 1.31 -0.02" radius-bottom="0.14"
-              radius-top="0" height="0.28" color="#d99a5b"></a-cone>
-
-      <!-- ตา -->
-      <a-sphere position="-0.11 1.10 -0.29" radius="0.045" color="#111"></a-sphere>
-      <a-sphere position="0.11 1.10 -0.29" radius="0.045" color="#111"></a-sphere>
-
-      <!-- จมูก -->
-      <a-sphere position="0 1.01 -0.32" radius="0.035" color="#e88"></a-sphere>
-
-      <!-- หาง -->
-      <a-torus id="catTail" position="0.48 0.72 0.05"
-               radius="0.22" radius-tubular="0.045"
-               rotation="0 90 0" color="#d99a5b"></a-torus>
-
-      <!-- ขา -->
-      <a-cylinder position="-0.25 0.30 -0.12" radius="0.07" height="0.35" color="#d99a5b"></a-cylinder>
-      <a-cylinder position="0.25 0.30 -0.12" radius="0.07" height="0.35" color="#d99a5b"></a-cylinder>
-
-    </a-entity>
-  </a-marker>
-
-  <!-- Marker เครื่องซักผ้า: ใช้ Kanji marker -->
-  <a-marker id="washerMarker" preset="kanji">
-    <a-entity id="washingMachine" position="0 0 0">
-
-      <!-- ตัวเครื่อง -->
-      <a-box position="0 0.75 0" width="1.4" height="1.5" depth="0.75"
-             color="#d8d8d8"></a-box>
-
-      <!-- แผงควบคุม -->
-      <a-box position="0 1.42 -0.40" width="1.25" height="0.25" depth="0.06"
-             color="#303030"></a-box>
-
-      <!-- ปุ่ม -->
-      <a-cylinder position="0.35 1.45 -0.45" radius="0.07" height="0.04"
-                   rotation="90 0 0" color="#eeeeee"></a-cylinder>
-
-      <!-- ประตู -->
-      <a-cylinder position="0 0.72 -0.405" radius="0.43" height="0.08"
-                   rotation="90 0 0" color="#222"></a-cylinder>
-      <a-cylinder position="0 0.72 -0.45" radius="0.34" height="0.09"
-                   rotation="90 0 0" color="#6fa8dc"></a-cylinder>
-
-      <!-- ถังซักหมุน -->
-      <a-cylinder id="drum" position="0 0.72 -0.51"
-                   radius="0.25" height="0.03"
-                   rotation="90 0 0" color="#aaa"></a-cylinder>
-
-      <!-- วงแหวน -->
-      <a-torus id="drumRing" position="0 0.72 -0.53"
-               radius="0.25" radius-tubular="0.035"
-               rotation="90 0 0" color="#fff"></a-torus>
-
-      <!-- ขา -->
-      <a-cylinder position="-0.5 0.05 0.25" radius="0.08" height="0.15" color="#555"></a-cylinder>
-      <a-cylinder position="0.5 0.05 0.25" radius="0.08" height="0.15" color="#555"></a-cylinder>
-      <a-cylinder position="-0.5 0.05 -0.25" radius="0.08" height="0.15" color="#555"></a-cylinder>
-      <a-cylinder position="0.5 0.05 -0.25" radius="0.08" height="0.15" color="#555"></a-cylinder>
-
-    </a-entity>
-  </a-marker>
-
-  <a-entity camera></a-entity>
-</a-scene>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>AR VEICHI Inverter + Washing Machine</title>
+<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+<script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+<style>
+html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;font-family:Arial,sans-serif}
+#panel{position:fixed;z-index:10;left:50%;bottom:14px;transform:translateX(-50%);width:min(94vw,560px);background:rgba(0,0,0,.78);color:#fff;border-radius:16px;padding:12px;box-sizing:border-box;text-align:center;backdrop-filter:blur(4px)}
+#title{font-size:18px;font-weight:700;margin-bottom:8px}.row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}button{border:0;border-radius:10px;padding:11px 16px;font-size:16px;font-weight:700;cursor:pointer;min-width:86px}#speed{font-size:22px;font-weight:800;margin:5px 0 10px}#hint{font-size:12px;opacity:.8;margin-top:8px}
+</style>
 <script>
-  let speed = 0;
-  const MIN_SPEED = 0;
-  const MAX_SPEED = 1200;
-
-  const speedText = document.getElementById("speed");
-  const drum = document.getElementById("drum");
-  const drumRing = document.getElementById("drumRing");
-  const catTail = document.getElementById("catTail");
-
-  function setAnimation(el, duration) {
-    if (!el) return;
-    el.setAttribute("animation", {
-      property: "rotation",
-      to: "90 0 450",
-      loop: true,
-      dur: duration,
-      easing: "linear"
-    });
-  }
-
-  function updateSpeed() {
-    speed = Math.max(MIN_SPEED, Math.min(MAX_SPEED, speed));
-    speedText.textContent = speed;
-
-    if (speed === 0) {
-      drum.removeAttribute("animation");
-      drumRing.removeAttribute("animation");
-      catTail.removeAttribute("animation");
-      return;
-    }
-
-    // ยิ่ง RPM สูง ยิ่งหมุนเร็ว
-    const duration = Math.max(80, 60000 / speed);
-
-    setAnimation(drum, duration);
-    setAnimation(drumRing, duration);
-
-    // ให้หางแมวขยับตามความเร็วด้วย
-    catTail.setAttribute("animation", {
-      property: "rotation",
-      to: "0 90 35",
-      dir: "alternate",
-      loop: true,
-      dur: Math.max(120, duration * 2),
-      easing: "easeInOutSine"
-    });
-  }
-
-  function changeSpeed(amount) {
-    speed += amount;
-    updateSpeed();
-  }
-
-  function stopAll() {
-    speed = 0;
-    updateSpeed();
-  }
-
-  document.addEventListener("keydown", function(e) {
-    if (e.key === "+" || e.key === "=") changeSpeed(100);
-    if (e.key === "-") changeSpeed(-100);
-    if (e.code === "Space") stopAll();
-  });
-
-  updateSpeed();
+let speed=0; const MIN_SPEED=0,MAX_SPEED=1500,STEP=100;
+AFRAME.registerComponent('speed-rotor',{schema:{speed:{type:'number',default:0}},tick:function(time,delta){if(!this.el.object3D.visible)return;const degPerSec=this.data.speed*0.8;this.el.object3D.rotation.z+=(degPerSec*delta/1000)*Math.PI/180;}});
+function setSpeed(v){speed=Math.max(MIN_SPEED,Math.min(MAX_SPEED,v));document.getElementById('speed').textContent=speed+' RPM';document.querySelectorAll('[speed-rotor]').forEach(el=>el.setAttribute('speed-rotor','speed:'+speed));}
+function changeSpeed(d){setSpeed(speed+d)}
+window.addEventListener('load',()=>{setSpeed(0);document.getElementById('reset').onclick=()=>setSpeed(0);document.getElementById('plus').onclick=()=>changeSpeed(STEP);document.getElementById('minus').onclick=()=>changeSpeed(-STEP);});
 </script>
-</body>
-</html>
+</head>
+<body>
+<div id="panel"><div id="title">AR VEICHI Inverter + Washing Machine</div><div>ความเร็วจำลอง</div><div id="speed">0 RPM</div><div class="row"><button id="minus">− 100</button><button id="reset">STOP</button><button id="plus">+ 100</button></div><div id="hint">อนุญาตกล้อง แล้วส่องไปที่ Marker HIRO</div></div>
+<a-scene embedded vr-mode-ui="enabled:false" renderer="logarithmicDepthBuffer:true;colorManagement:true" arjs="sourceType:webcam;facingMode:environment;debugUIEnabled:false;">
+<a-marker preset="hiro" id="hiroMarker">
+<a-entity position="-0.55 0 0">
+<a-box position="0 0.65 0" width="0.75" height="1.25" depth="0.32" color="#e9e9e9"></a-box>
+<a-box position="0 0.68 0.166" width="0.61" height="0.93" depth="0.025" color="#202020"></a-box>
+<a-box position="0 0.98 0.185" width="0.28" height="0.15" depth="0.02" color="#42b7ff"></a-box>
+<a-box position="0 0.65 0.185" width="0.28" height="0.35" depth="0.02" color="#4a4a4a"></a-box>
+<a-cylinder position="-0.075 0.73 0.205" radius="0.035" height="0.015" rotation="90 0 0" color="#ddd"></a-cylinder>
+<a-cylinder position="0.075 0.73 0.205" radius="0.035" height="0.015" rotation="90 0 0" color="#ddd"></a-cylinder>
+<a-text value="VEICHI" position="-0.24 1.23 0.19" width="1.1" color="#111" align="center"></a-text>
+<a-text value="INVERTER" position="-0.24 1.13 0.19" width="0.85" color="#111" align="center"></a-text>
+<a-box position="-0.23 0.25 0.18" width="0.12" height="0.08" depth="0.03" color="#111"></a-box><a-box position="0 0.25 0.18" width="0.12" height="0.08" depth="0.03" color="#111"></a-box><a-box position="0.23 0.25 0.18" width="0.12" height="0.08" depth="0.03" color="#111"></a-box>
+</a-entity>
+<a-entity position="0.55 0 0">
+<a-box position="0 0.58 0" width="0.9" height="1.1" depth="0.55" color="#eeeeee"></a-box>
+<a-box position="0 0.94 0.285" width="0.72" height="0.18" depth="0.025" color="#222"></a-box>
+<a-text value="WASHING" position="-0.27 0.96 0.31" width="0.9" color="#fff" align="center"></a-text>
+<a-cylinder position="0 0.51 0.31" radius="0.30" height="0.035" rotation="90 0 0" color="#333"></a-cylinder>
+<a-cylinder position="0 0.51 0.335" radius="0.24" height="0.04" rotation="90 0 0" color="#79a7bd" speed-rotor="speed:0"></a-cylinder>
+<a-cylinder position="0 0.51 0.36" radius="0.16" height="0.045" rotation="90 0 0" color="#bcdde8" speed-rotor="speed:0"></a-cylinder>
+<a-cylinder position="0.26 0.94 0.31" radius="0.055" height="0.03" rotation="90 0 0" color="#aaa"></a-cylinder>
+<a-text value="SPEED" position="-0.30 1.18 0.31" width="1.0" color="#111" align="center"></a-text>
+</a-entity>
+<a-plane rotation="-90 0 0" width="2.7" height="1.8" color="#d8d8d8"></a-plane>
+</a-marker>
+<a-entity camera></a-entity>
+</a-scene>
+</body></html>
